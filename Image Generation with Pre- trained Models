@@ -1,0 +1,16 @@
+import torch
+from diffusers import StableDiffusionPipeline
+
+# Load model and move to GPU if available
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16)
+pipe = pipe.to("cuda" if torch.cuda.is_available() else "cpu")
+
+# Define your prompt
+prompt = "A fantasy landscape with mountains and a river under a starry sky"
+
+# Generate image
+image = pipe(prompt, num_inference_steps=50, guidance_scale=7.5).images[0]
+
+# Save and display the image
+image.save("fantasy_landscape.png")
+image.show()
